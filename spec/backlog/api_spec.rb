@@ -40,6 +40,10 @@ describe Backlog::API do
       it "project_idを指定してプロジェクトを取得できる" do
         @client.get_project(100).class == Backlog::Object::Project
       end
+
+      it "keyを指定してプロジェクトを取得できる" do
+        @client.get_project("key").class = Backlog::Object::Project
+      end
     end
   end
 end
