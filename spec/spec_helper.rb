@@ -1,6 +1,8 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'rspec'
+require 'rr'
+
 require 'backlog'
 
 # Requires supporting files with custom matchers and macros, etc,
@@ -8,5 +10,5 @@ require 'backlog'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
-  
+  config.mock_with :rr
 end
