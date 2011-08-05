@@ -12,5 +12,13 @@ module Backlog
       end
       attr_reader :id, :name, :key, :url, :archived
     end
+
+    class Component
+      def initialize(component)
+        @id = component['id']
+        @name = component['name']
+      end
+      attr_reader :id, :name
+    end
   end
 end
