@@ -25,5 +25,11 @@ module Backlog
         Backlog::Object::Version.new(version)
       }
     end
+
+    def get_users(project_id)
+      self.call("backlog.getUsers", project_id).map {|user|
+        Backlog::Object::User.new(user)
+      }
+    end
   end
 end

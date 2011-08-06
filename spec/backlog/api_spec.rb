@@ -89,4 +89,22 @@ describe Backlog::API do
       end
     end
   end
+
+  describe "ユーザAPI" do
+    context "プロジェクトの参加メンバーを取得する" do
+      let(:user) {
+        [{"id" => 1000,
+          "name" => "yoppi"}]
+      }
+
+      before do
+        @client = Backlog::Client.new("hoge", "yoppi", "test")
+        mock(@client).call.with_any_args{ user }
+      end
+
+      it "プロジェクトを指定してその参加メンバーを取得できる" do
+        @client.get_users(100).class.should == Array
+      end
+    end
+  end
 end

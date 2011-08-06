@@ -29,5 +29,13 @@ module Backlog
       end
       attr_reader :id, :name, :date
     end
+
+    class User
+      def initialize(user)
+        @id = user['id']
+        @name = user['name']
+      end
+      attr_reader :id, :name
+    end
   end
 end
