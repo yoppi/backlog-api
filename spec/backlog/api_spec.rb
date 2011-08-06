@@ -19,7 +19,7 @@ describe Backlog::API do
       end
 
       it "プロジェクトのリストを取得できる" do
-        @client.get_projects.class == Array
+        @client.get_projects.class.should == Array
       end
     end
 
@@ -38,11 +38,35 @@ describe Backlog::API do
       end
 
       it "project_idを指定してプロジェクトを取得できる" do
-        @client.get_project(100).class == Backlog::Object::Project
+        @client.get_project(100).class.should == Backlog::Object::Project
       end
 
       it "keyを指定してプロジェクトを取得できる" do
-        @client.get_project("key").class = Backlog::Object::Project
+        @client.get_project("key").class.should == Backlog::Object::Project
+      end
+    end
+  end
+
+  describe "カテゴリAPI" do
+    context "プロジェクトのカテゴリを取得する" do
+      let(:component) {
+        [{"id" => 100,
+          "name" => "カテゴリ名"}]
+      }
+
+      before do
+        @client = Backlog::Client.new("hoge", "yoppi", "test")
+        mock(@client).call.with_any_args { component }
+      end
+
+      it "指定したプロジェクトのカテゴリが取得できる" do
+        @client.get_components(100).class.should == Array
+      end
+
+      it "取得したカテゴリはすべてカテゴリオブジェクトである" do
+        @client.get_components(100).each {|component|
+          component.class.should == Backlog::Object::Component
+        }
       end
     end
   end

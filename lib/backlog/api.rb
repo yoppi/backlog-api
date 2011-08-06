@@ -15,9 +15,9 @@ module Backlog
     end
 
     def get_components(project_id)
-      Backlog::Object::Component.new(
-        self.call("backlog.getComponents", project_id)
-      )
+      self.call("backlog.getComponents", project_id).map {|component|
+        Backlog::Object::Component.new(component)
+      }
     end
   end
 end
