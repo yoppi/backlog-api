@@ -31,5 +31,11 @@ module Backlog
         Backlog::Object::User.new(user)
       }
     end
+
+    def get_issue_types(project_id)
+      self.call("backlog.getIssueTypes", project_id).map {|issue_type|
+        Backlog::Object::IssueType.new(issue_type)
+      }
+    end
   end
 end

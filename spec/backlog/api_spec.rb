@@ -107,4 +107,30 @@ describe Backlog::API do
       end
     end
   end
+
+  describe "イシューAPI" do
+    context "プロジェクトのイシュータイプを取得する" do
+      let(:issue_types) {
+        [{"id" => 2000,
+          "name" => "タスク",
+          "color" => "#7ea800"
+        }]
+      }
+
+      before do
+        @client = Backlog::Client.new("hoge", "yoppi", "test")
+        mock(@client).call.with_any_args { issue_types }
+      end
+
+      it "プロジェクトを指定してそのイシュータイプのリストを取得する" do
+        @client.get_issue_types(100).class.should == Array
+      end
+
+      it "イシュータイプのリスト要素はすべてイシュータイプオブジェクトである" do
+        @client.get_issue_types(100).each {|issue_type|
+          issue_type.class.should == Backlog::Object::IssueType
+        }
+      end
+    end
+  end
 end
