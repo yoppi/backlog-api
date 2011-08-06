@@ -70,4 +70,23 @@ describe Backlog::API do
       end
     end
   end
+
+  describe "バージョンAPI" do
+    context "プロジェクトの発生バージョン/マイルストーンを取得する" do
+      let(:version) {
+        [{"id" => 733,
+          "name" => "サイトオープン",
+          "date" => "20110808"}]
+      }
+
+      before do
+        @client = Backlog::Client.new("hoge", "yoppi", "test")
+        mock(@client).call.with_any_args { version }
+      end
+
+      it "プロジェクトを指定して発生バージョンが取得できる" do
+        @client.get_versions(100).class.should == Array
+      end
+    end
+  end
 end
