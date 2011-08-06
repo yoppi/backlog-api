@@ -19,5 +19,11 @@ module Backlog
         Backlog::Object::Component.new(component)
       }
     end
+
+    def get_versions(project_id)
+      self.call("backlog.getVersions", project_id).map {|version|
+        Backlog::Object::Version.new(version)
+      }
+    end
   end
 end
