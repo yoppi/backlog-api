@@ -37,5 +37,14 @@ module Backlog
       end
       attr_reader :id, :name
     end
+
+    class IssueType
+      def initialize(issue_type)
+        @id = issue_type['id']
+        @name = issue_type['name']
+        @color = issue_type['color']
+      end
+      attr_reader :id, :name, :color
+    end
   end
 end
