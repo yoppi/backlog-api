@@ -111,5 +111,16 @@ module Backlog
       end
       attr_reader :id, :name, :date
     end
+
+    class Comment
+      def initialize(comment)
+        @id = comment['id']
+        @content = comment['content']
+        @created_user = User.new(comment['created_user'])
+        @created_on = comment['created_on']
+        @updated_on = comment['updated_on']
+      end
+      attr_reader :id, :content, :created_user, :created_on, :updated_on
+    end
   end
 end

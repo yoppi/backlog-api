@@ -3,6 +3,10 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'spec_helper'))
 
 describe Backlog::API do
+  before(:each) do
+    @client = Backlog::Client.new("hoge", "yoppi", "test")
+  end
+
   describe "プロジェクトAPI" do
     context "プロジェクトの一覧を取得する" do
       let(:projects) {
@@ -14,7 +18,6 @@ describe Backlog::API do
       }
 
       before do
-        @client = Backlog::Client.new("hoge", "yoppi", "test")
         mock(@client).call.with_any_args { projects }
       end
 
@@ -33,7 +36,6 @@ describe Backlog::API do
       }
 
       before do
-        @client = Backlog::Client.new("hoge", "yoppi", "test")
         mock(@client).call.with_any_args { project }
       end
 
@@ -55,7 +57,6 @@ describe Backlog::API do
       }
 
       before do
-        @client = Backlog::Client.new("hoge", "yoppi", "test")
         mock(@client).call.with_any_args { component }
       end
 
@@ -80,7 +81,6 @@ describe Backlog::API do
       }
 
       before do
-        @client = Backlog::Client.new("hoge", "yoppi", "test")
         mock(@client).call.with_any_args { version }
       end
 
@@ -98,7 +98,6 @@ describe Backlog::API do
       }
 
       before do
-        @client = Backlog::Client.new("hoge", "yoppi", "test")
         mock(@client).call.with_any_args{ user }
       end
 
@@ -118,7 +117,6 @@ describe Backlog::API do
       }
 
       before do
-        @client = Backlog::Client.new("hoge", "yoppi", "test")
         mock(@client).call.with_any_args { issue_types }
       end
 
@@ -168,12 +166,32 @@ describe Backlog::API do
       }
 
       before do
-        @client = Backlog::Client.new("hoge", "yoppi", "test")
         mock(@client).call.with_any_args { issue }
       end
 
       it "課題キーを指定してイシューを取得できる" do
         @client.get_issue("ISSUE-100").class.should == Backlog::Object::Issue
+      end
+    end
+  end
+
+  describe "コメントAPI" do
+    context "イシューのコメントを取得する" do
+      let(:comments) {
+        [{"id" => "12889281",
+          "content" => "ここはもっとシンプルなデザインがいいと思いました。",
+          "created_user" => {"id" => 100, "name" => "yoppi"},
+          "created_on" => "20110808165300",
+          "updated_on" => "20110808165300"
+        }]
+      }
+
+      before do
+        mock(@client).call.with_any_args { comments }
+      end
+
+      it "指定したイシューのコメントが取得できる" do
+        @client.get_comments(1000).class.should == Array
       end
     end
   end

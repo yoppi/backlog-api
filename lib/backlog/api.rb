@@ -47,5 +47,11 @@ module Backlog
         self.call("backlog.getIssue", issue_key)
       )
     end
+
+    def get_comments(issue_id)
+      self.call("backlog.getComments", issue_id).map {|comment|
+        Backlog::Object::Comment.new(comment)
+      }
+    end
   end
 end
