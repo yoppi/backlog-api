@@ -8,9 +8,10 @@ module Backlog
       }
     end
 
-    def get_project(key_or_project_id)
+    # String | Integer -> Backlog::Object::Project
+    def get_project(project_key)
       Backlog::Object::Project.new(
-        self.call("backlog.getProject", key_or_project_id)
+        self.call("backlog.getProject", conv_str_to_int(project_key))
       )
     end
 
