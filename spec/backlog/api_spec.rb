@@ -105,6 +105,23 @@ describe Backlog::API do
         @client.get_users(100).class.should == Array
       end
     end
+
+    context "特定のユーザの情報を取得する" do
+      let(:user) {
+        {"id" => 1000,
+         "name" => "yoppi",
+         "lang" => "ja",
+         "updated_on" => "20110807220000"}
+      }
+
+      before do
+        mock(@client).call.with_any_args { user }
+      end
+
+      it "ユーザIDを指定してそのユーザの情報を取得する" do
+        @client.get_user(100).class.should == Backlog::Object::DetailUser
+      end
+    end
   end
 
   describe "イシューAPI" do

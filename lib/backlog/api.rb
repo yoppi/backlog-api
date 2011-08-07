@@ -32,6 +32,16 @@ module Backlog
       }
     end
 
+    # String | Integer -> Backlog::Object::DetailUser
+    def get_user(user_key)
+      if user_key.instance_of? String
+        user_key = (user_key.to_i.zero? && user_key != "0") ? user_key : user_key.to_i
+      end
+      Backlog::Object::DetailUser.new(
+        self.call("backlog.getUser", user_key)
+      )
+    end
+
     def get_issue_types(project_id)
       self.call("backlog.getIssueTypes", project_id).map {|issue_type|
         Backlog::Object::IssueType.new(issue_type)

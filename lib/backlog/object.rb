@@ -38,6 +38,15 @@ module Backlog
       attr_reader :id, :name
     end
 
+    class DetailUser < User
+      def initialize(user)
+        super(user)
+        @lang = user['lang']
+        @updated_on = user['updated_on']
+      end
+      attr_reader :lang, :updated_on
+    end
+
     class IssueType
       def initialize(issue_type)
         @id = issue_type['id']
