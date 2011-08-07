@@ -132,5 +132,49 @@ describe Backlog::API do
         }
       end
     end
+
+    context "プロジェクトのイシューを取得する" do
+      let(:issue) {
+        {
+          "id" => 1617103,
+          "key" => "ISSUE-100",
+          "summary" => "トップページのデザイン決定",
+          "description" => "トップページのデザイン決定する",
+          "url" => "https://test.backog.jp/view/ISSUE-100",
+          "due_date" => "20110831",
+          "start_date" => "20110720",
+          "estimated_hours" => "100",
+          "actual_hours" => "200",
+          "issue_type" => {"id" => 2000,
+                           "name" => "タスク",
+                           "color" => "#7ea800"},
+          "priority" => {"id" => 300, "name" => "中"},
+          "resolution" => {"id" => 400, "name" => "対応済み"},
+          "status" => {"id" => 2, "name" => "処理中"},
+          "components" => [{"id" => 100,
+                            "name" => "カテゴリ名"}],
+          "versions" => [{"id" => 733,
+                          "name" => "サイトオープン",
+                          "date" => "20110808"}],
+          "milestones" => [{"id" => 800,
+                            "name" => "8/21リリース",
+                            "date" => "20110821"}],
+          "created_user" => {"id" => 1000, "name" => "yoppi"},
+          "assigner" => {"id" => 1000, "name" => "yoppi"},
+          "created_on" => "20110701",
+          "updated_on" => "20110807",
+          "custom_fields" => []
+        }
+      }
+
+      before do
+        @client = Backlog::Client.new("hoge", "yoppi", "test")
+        mock(@client).call.with_any_args { issue }
+      end
+
+      it "課題キーを指定してイシューを取得できる" do
+        @client.get_issue("ISSUE-100").class.should == Backlog::Object::Issue
+      end
+    end
   end
 end
