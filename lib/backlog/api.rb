@@ -34,11 +34,8 @@ module Backlog
 
     # String | Integer -> Backlog::Object::DetailUser
     def get_user(user_key)
-      if user_key.instance_of? String
-        user_key = (user_key.to_i.zero? && user_key != "0") ? user_key : user_key.to_i
-      end
       Backlog::Object::DetailUser.new(
-        self.call("backlog.getUser", user_key)
+        self.call("backlog.getUser", conv_str_to_int(user_key))
       )
     end
 
@@ -50,11 +47,8 @@ module Backlog
 
     # String | Integer -> Backlog::Object::Issue
     def get_issue(issue_key)
-      if issue_key.instance_of? String
-        issue_key = issue_key.to_i.zero? ? issue_key : issue_key.to_i
-      end
       Backlog::Object::Issue.new(
-        self.call("backlog.getIssue", issue_key)
+        self.call("backlog.getIssue", conv_str_to_int(issue_key))
       )
     end
 
@@ -68,6 +62,17 @@ module Backlog
       self.call("backlog.getTimeline").map {|timeline|
         Backlog::Object::Timeline.new(timeline)
       }
+    end
+
+    # String(Integer) -> Integer
+    # String(String) -> String
+    # Integer -> Integer
+    def conv_str_to_int(x)
+      if x.instance_of? String
+        (x.to_i.zero? && x != "0") ? x : x.to_i
+      else
+        x
+      end
     end
   end
 end
