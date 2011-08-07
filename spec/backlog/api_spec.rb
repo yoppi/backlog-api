@@ -174,4 +174,25 @@ describe Backlog::API do
       end
     end
   end
+
+  describe "コメントAPI" do
+    context "イシューのコメントを取得する" do
+      let(:comments) {
+        [{"id" => "12889281",
+          "content" => "ここはもっとシンプルなデザインがいいと思いました。",
+          "created_user" => {"id" => 100, "name" => "yoppi"},
+          "created_on" => "20110808165300",
+          "updated_on" => "20110808165300"
+        }]
+      }
+
+      before do
+        mock(@client).call.with_any_args { comments }
+      end
+
+      it "指定したイシューのコメントが取得できる" do
+        @client.get_comments(1000).class.should == Array
+      end
+    end
+  end
 end
