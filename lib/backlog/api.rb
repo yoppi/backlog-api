@@ -37,5 +37,11 @@ module Backlog
         Backlog::Object::IssueType.new(issue_type)
       }
     end
+
+    def get_issue(issue_key)
+      Backlog::Object::Issue.new(
+        self.call("backlog.getIssue", issue_key)
+      )
+    end
   end
 end
