@@ -58,15 +58,15 @@ module Backlog
         @start_date = issue['start_date'],
         @estimated_hours = issue['estimated_hours']
         @actual_hours = issue['actual_hours']
-        @issue_type = IssueType.new(issue['issue_type'])
-        @priority = Priority.new(issue['priority'])
-        @resolution = Resolution.new(issue['resolution'])
-        @status = Status.new(issue['status'])
-        @components = issue['components'].map {|x| Component.new(x) }
-        @versions = issue['versions'].map {|x| Version.new(x) }
-        @milestones = issue['milestones'].map {|x| Milestone.new(x)}
-        @created_user = User.new(issue['created_user'])
-        @assigner = User.new(issue['assigner'])
+        @issue_type = issue['issue_type'] ? IssueType.new(issue['issue_type']) : nil
+        @priority = issue['priority'] ? Priority.new(issue['priority']) : nil
+        @resolution = issue['resolution'] ? Resolution.new(issue['resolution']) : nil
+        @status = issue['status'] ? Status.new(issue['status']) : nil
+        @components = issue['components'] ? issue['components'].map {|x| Component.new(x) } : []
+        @versions = issue['versions'] ? issue['versions'].map {|x| Version.new(x) } : []
+        @milestones = issue['milestone'] ? issue['milestones'].map {|x| Milestone.new(x)} : []
+        @created_user = issue['created_user'] ? User.new(issue['created_user']) : nil
+        @assigner = issue['assigner'] ? User.new(issue['assigner']) : nil
         @created_on = issue['created_on']
         @updated_on = issue['updated_on']
         @custom_fields = issue['custom_fields']
@@ -121,6 +121,17 @@ module Backlog
         @updated_on = comment['updated_on']
       end
       attr_reader :id, :content, :created_user, :created_on, :updated_on
+    end
+
+    class Timeline
+      def initialize(timeline)
+        @type = timeline['type']
+        @content = timeline['content']
+        @updated_on = timeline['updated_on']
+        @user = timeline['user'] ? User.new(timeline['user']) : nil
+        @issue = timeline['issue'] ? Issue.new(timeline['issue']) : nil
+      end
+      attr_reader :type, :content, :updated_on, :user, :issue
     end
   end
 end

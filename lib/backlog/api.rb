@@ -53,5 +53,11 @@ module Backlog
         Backlog::Object::Comment.new(comment)
       }
     end
+
+    def get_timeline
+      self.call("backlog.getTimeline").map {|timeline|
+        Backlog::Object::Timeline.new(timeline)
+      }
+    end
   end
 end
