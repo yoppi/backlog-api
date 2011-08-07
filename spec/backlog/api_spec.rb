@@ -195,4 +195,29 @@ describe Backlog::API do
       end
     end
   end
+
+  describe "タイムラインAPI" do
+    context "タイムライン(イシューの更新情報)の一覧を取得する" do
+      let(:timeline) {
+        [{
+          "type" => {"id" => 1, "name" => "更新"},
+          "content" => "着手しました",
+          "updated_on" => "20110807194600",
+          "user" => {"id" => 100, "name" => "yoppi"},
+          "issue" => {"id" => "73", "key" => "ISSUE-100",
+                      "summary" => "トップページのデザイン決定",
+                      "description" => "トップページのデザイン決定します",
+                      "priority" => {"id" => 2, "name" => "中"}}
+        }]
+      }
+
+      before do
+        mock(@client).call.with_any_args { timeline }
+      end
+
+      it "タイムラインの一覧が取得できる" do
+        @client.get_timeline().class.should == Array
+      end
+    end
+  end
 end
