@@ -38,7 +38,11 @@ module Backlog
       }
     end
 
+    # String | Integer -> Backlog::Object::Issue
     def get_issue(issue_key)
+      if issue_key.instance_of? String
+        issue_key = issue_key.to_i.zero? ? issue_key : issue_key.to_i
+      end
       Backlog::Object::Issue.new(
         self.call("backlog.getIssue", issue_key)
       )
