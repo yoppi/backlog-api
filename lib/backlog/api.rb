@@ -40,6 +40,13 @@ module Backlog
       )
     end
 
+    # String | Integer -> Backlog::Object::UserIcon
+    def get_user_icon(user_key)
+      Backlog::Object::UserIcon.new(
+        self.call("backlog.getUserIcon", conv_str_to_int(user_key))
+      )
+    end
+
     def get_issue_types(project_id)
       self.call("backlog.getIssueTypes", project_id).map {|issue_type|
         Backlog::Object::IssueType.new(issue_type)

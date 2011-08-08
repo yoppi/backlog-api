@@ -122,6 +122,24 @@ describe Backlog::API do
         @client.get_user(100).class.should == Backlog::Object::DetailUser
       end
     end
+
+    context "特定のユーザのアイコンを取得する" do
+      let(:user_icon) {
+        {
+          "id" => 1000,
+          "content_type" => "image/gif",
+          "data" => "/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAgACADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDMvWNpEHL5ycCo00rV7+NZrOylkjI+WR2VB+GeTVhGjQj7UHlfP7uN+Ax/Ht7f4VPa+OjoupS2GrSRb5pEaKOINiFWHG7PUng8V51SpKWkS8Jg4RSnUMqa11OwkEd9ZmPJwr5DZP1FNMUjA5P4cf4VtJd6rHbyQa1HBcRnMnnRMeUyTg579uPSqTPAw2wENH2yBkd8E06NR35WZ47CRSdSI3QbG28NXD3K3VzdyyZUxTMNiruU9upwDzx19zXPa3px1DxAuoopQZU5LZ6etd/d2EUwIkwy9RkYwayZrRg4KuVRei8VsoPmuc7xb5bET6hBLZGOVH85YNkc0e5eSSWDAHG0/J2zwazrJVt1IjiOPUD7x/OtG437CAcA8deRTYLWadRicmNONoAGP0qPZ8slYcq7qQfMf//Z",
+        }
+      }
+
+      before do
+        mock(@client).call.with_any_args { user_icon }
+      end
+
+      it "ユーザを指定してそのユーザのアイコンが取得できる" do
+        @client.get_user_icon(100).class.should == Backlog::Object::UserIcon
+      end
+    end
   end
 
   describe "イシューAPI" do
