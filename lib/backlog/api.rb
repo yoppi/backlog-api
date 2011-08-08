@@ -78,6 +78,12 @@ module Backlog
       }
     end
 
+    def get_statuses
+      self.call("backlog.getStatuses").map {|status|
+        Backlog::Object::Status.new(status)
+      }
+    end
+
     # String(Integer) -> Integer
     # String(String) -> String
     # Integer -> Integer

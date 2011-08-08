@@ -278,4 +278,24 @@ describe Backlog::API do
       }
     end
   end
+
+  describe "イシュー状態API" do
+    let(:statuses) {
+      [{"id" => 4, "name" => "完了"}]
+    }
+
+    before do
+      mock(@client).call.with_any_args { statuses }
+    end
+
+    it "イシューの状態一覧を取得できる" do
+      @client.get_statuses().class.should == Array
+    end
+
+    it "取得したイシューの状態一覧の各状態はStatusオブジェクトであること" do
+      @client.get_statuses().each {|status|
+        status.class.should == Backlog::Object::Status
+      }
+    end
+  end
 end
