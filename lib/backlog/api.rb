@@ -72,6 +72,12 @@ module Backlog
       }
     end
 
+    def get_activity_types
+      self.call("backlog.getActivityTypes").map {|activity_type|
+        Backlog::Object::ActivityType.new(activity_type)
+      }
+    end
+
     # String(Integer) -> Integer
     # String(String) -> String
     # Integer -> Integer

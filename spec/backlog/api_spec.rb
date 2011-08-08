@@ -255,4 +255,27 @@ describe Backlog::API do
       end
     end
   end
+
+  describe "イシューの更新情報の種別一覧API" do
+    let(:activity_types) {
+      [
+        {"id" => 100,
+         "name" => "課題"}
+      ]
+    }
+
+    before do
+      mock(@client).call.with_any_args { activity_types }
+    end
+
+    it "イシューの更新情報の種別一覧を取得できる" do
+      @client.get_activity_types().class.should == Array
+    end
+
+    it "各種別のオブジェクトであること" do
+      @client.get_activity_types().each {|activity_type|
+        activity_type.class.should == Backlog::Object::ActivityType
+      }
+    end
+  end
 end

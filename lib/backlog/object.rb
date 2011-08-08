@@ -153,5 +153,13 @@ module Backlog
       end
       attr_reader :type, :content, :updated_on, :user, :issue
     end
+
+    class ActivityType
+      def initialize(activity_type)
+        @id = activity_type['id']
+        @name = activity_type['name']
+      end
+      attr_reader :id, :name
+    end
   end
 end
