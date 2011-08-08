@@ -145,7 +145,7 @@ module Backlog
 
     class Timeline
       def initialize(timeline)
-        @type = timeline['type']
+        @type = timeline['type'] ? ActivityType.new(timeline['type']) : nil
         @content = timeline['content']
         @updated_on = timeline['updated_on']
         @user = timeline['user'] ? User.new(timeline['user']) : nil
