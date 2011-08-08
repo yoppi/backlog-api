@@ -47,6 +47,17 @@ module Backlog
       attr_reader :lang, :updated_on
     end
 
+    class UserIcon
+      def initialize(user_icon)
+        @id = user_icon['id']
+        @content_type = user_icon['content_type']
+        # backlog.getUserIcon['data'] isn't encoded, so encode here.
+        @data = XMLRPC::Base64.encode(user_icon['data']).delete("\n")
+        @updated_on = user_icon['updated_on']
+      end
+      attr_reader :id, :content_type, :data, :updated_on
+    end
+
     class IssueType
       def initialize(issue_type)
         @id = issue_type['id']
