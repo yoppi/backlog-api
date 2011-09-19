@@ -16,8 +16,12 @@ module Backlog
     end
     attr_reader :space, :username, :password
 
-    def call(method, args)
-      @client.call(method, args)
+    def call(method, args=nil)
+      if args
+        @client.call(method, args)
+      else
+        @client.call(method)
+      end
     end
   end
 end
