@@ -298,4 +298,24 @@ describe Backlog::API do
       }
     end
   end
+
+  describe "イシュー完了理由API" do
+    let(:resolutions) {
+      [{"id" => 0, "name" => "対応済み"}]
+    }
+
+    before do
+      mock(@client).call.with_any_args { resolutions }
+    end
+
+    it "イシューの完了理由一覧を取得できる" do
+      @client.get_resolutions().class.should == Array
+    end
+
+    it "取得したイシューの完了理由一覧はResolutionオブジェクトであること" do
+      @client.get_resolutions().each {|resolution|
+        resolution.class.should == Backlog::Object::Resolution
+      }
+    end
+  end
 end
