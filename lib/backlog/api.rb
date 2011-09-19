@@ -90,6 +90,12 @@ module Backlog
       }
     end
 
+    def get_priorities
+      self.call("backlog.getPriorities").map {|priority|
+        Backlog::Object::Priority.new(priority)
+      }
+    end
+
     # String(Integer) -> Integer
     # String(String) -> String
     # Integer -> Integer
