@@ -318,4 +318,24 @@ describe Backlog::API do
       }
     end
   end
+
+  describe "イシューの優先度一覧取得API" do
+    let(:priorities) {
+      [{"id" => 3, "name" => "中"}]
+    }
+
+    before do
+      mock(@client).call.with_any_args { priorities }
+    end
+
+    it "イシューの優先度一覧を取得できる" do
+      @client.get_priorities().class.should == Array
+    end
+
+    it "取得したイシューの各優先度はPriorityオブジェクトであること" do
+      @client.get_priorities().each {|priority|
+        priority.class.should == Backlog::Object::Priority
+      }
+    end
+  end
 end
