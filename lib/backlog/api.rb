@@ -84,6 +84,12 @@ module Backlog
       }
     end
 
+    def get_resolutions
+      self.call("backlog.getResolutions").map {|resolution|
+        Backlog::Object::Resolution.new(resolution)
+      }
+    end
+
     # String(Integer) -> Integer
     # String(String) -> String
     # Integer -> Integer
