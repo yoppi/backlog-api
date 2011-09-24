@@ -14,7 +14,7 @@ module Backlog
       @password = password
       @client = XMLRPC::Client.new2(BACKLOG_API % [@username, @password, @space])
     end
-    attr_reader :space, :username, :password
+    attr_reader :space, :username, :password, :client
 
     def call(method, args=nil)
       if args
