@@ -338,4 +338,157 @@ describe Backlog::API do
       }
     end
   end
+
+  describe "カスタム属性の情報取得API" do
+    context "カスタム属性タイプが文字列の場合" do
+      let(:custom_fields_1) {
+        [{"id" => 4,
+          "type_id" => 1,
+          "name" => "OS",
+          "description" => "現象が発生したOS",
+          "required" => 1,
+          "issue_types" => [{"id" => 5, "name" => "バグ", "color" => "#990000"}]}]
+      }
+
+      before do
+        mock(@client).call.with_any_args { custom_fields_1 }
+      end
+
+      it "プロジェクトIDを指定して登録しているカスタム属性の情報を取得できる" do
+        @client.get_custom_fields(100).class.should == Array
+      end
+
+      it "プロジェクトIDをissue_type_idを指定して登録しているカスタム属性の情報を取得できる" do
+        @client.get_custom_fields(100, 10).class.should == Array
+      end
+
+      it "プロジェクトIDをissue_typeを指定して登録しているカスタム属性の情報を取得できる" do
+        @client.get_custom_fields(100, "バグ").class.should == Array
+      end
+
+      it "取得したカスタム属性情報はCustomFieldsオブジェクトであること" do
+        @client.get_custom_fields(100).each {|custom_field|
+          custom_field.class.should == Backlog::Object::CustomField
+          custom_field.id.should == custom_fields_1.first["id"]
+          custom_field.type_id.should == custom_fields_1.first["type_id"]
+          custom_field.name.should == custom_fields_1.first["name"]
+          custom_field.description.should == custom_fields_1.first["description"]
+          custom_field.required.should == custom_fields_1.first["required"]
+          custom_field.issue_types.class.should == Array
+          custom_field.issue_types.each {|issue_type|
+            issue_type.class.should == Backlog::Object::IssueType
+            issue_type.id.should == custom_fields_1.first["issue_types"].first["id"]
+            issue_type.name.should == custom_fields_1.first["issue_types"].first["name"]
+            issue_type.color.should == custom_fields_1.first["issue_types"].first["color"]
+          }
+        }
+      end
+    end
+
+    context "カスタム属性タイプが数値の場合" do
+      let(:custom_fields_3) {
+        [{"id" => 10,
+          "type_id" => 3,
+          "name" => "割合",
+          "description" => "発生した割合",
+          "required" => 1,
+          "issue_types" => [{"id" => 5, "name" => "バグ", "color" => "#990000"}],
+          "min" => 0.0,
+          "max" => 100.0,
+          "initial_value" => 0.0,
+          "unit" => "%"
+        }]
+      }
+
+      before do
+        mock(@client).call.with_any_args { custom_fields_3 }
+      end
+
+      it "取得したカスタム属性情報はCustomFieldオブジェクトであること" do
+        @client.get_custom_fields(100).each {|custom_field|
+          custom_field.min.should == custom_fields_3.first["min"]
+          custom_field.max.should == custom_fields_3.first["max"]
+          custom_field.initial_value.should == custom_fields_3.first["initial_value"]
+          custom_field.unit.should == custom_fields_3.first["unit"]
+        }
+      end
+    end
+
+    context "カスタム属性タイプが日付の場合" do
+      let(:custom_fields_4) {
+        [{"id" => 20,
+          "type_id" => 4,
+          "name" => "日付",
+          "description" => "発生した日付",
+          "required" => 1,
+          "issue_types" => [{"id" => 5, "name" => "バグ", "color" => "#990000"}],
+          "initial_value_type" => 1,
+          "min" => 100.0,
+          "max" => 0.0,
+        }]
+      }
+
+      before do
+        mock(@client).call.with_any_args { custom_fields_4 }
+      end
+
+      it "取得したカスタム属性情報はCustomFieldオブジェクトであること" do
+        @client.get_custom_fields(100).each {|custom_field|
+          custom_field.initial_value_type.should == custom_fields_4.first["initial_value_type"]
+          custom_field.min.should == custom_fields_4.first["min"]
+          custom_field.max.should == custom_fields_4.first["max"]
+        }
+      end
+    end
+
+    context "カスタム属性タイプがリストの場合" do
+      let(:custom_fields_5) {
+        [{"id" => 20,
+          "type_id" => 5,
+          "name" => "OS",
+          "description" => "発生したOS",
+          "required" => 1,
+          "issue_types" => [{"id" => 5, "name" => "バグ", "color" => "#990000"}],
+          "items" => [{"id" => 1, "name" => "windows"}]
+        }]
+      }
+
+      before do
+        mock(@client).call.with_any_args { custom_fields_5 }
+      end
+
+      it "取得したカスタム属性情報はCustomFieldオブジェクトであること" do
+        @client.get_custom_fields(100).each {|custom_field|
+          custom_field.items.class == Array
+          custom_field.items.each {|item|
+            item.class.should == Backlog::Object::Item
+          }
+        }
+      end
+    end
+
+    context "カスタム属性タイプがチェックボックスの場合" do
+      let(:custom_fields_7) {
+        [{"id" => 20,
+          "type_id" => 5,
+          "name" => "OS",
+          "description" => "発生したOS",
+          "required" => 1,
+          "issue_types" => [{"id" => 5, "name" => "バグ", "color" => "#990000"}],
+          "allow_input" => "1",
+          "items" => [{"id" => 1, "name" => "windows"}]
+        }]
+      }
+
+      before do
+        mock(@client).call.with_any_args { custom_fields_7 }
+      end
+
+      it "取得したカスタム属性情報はCustomFieldオブジェクトであること" do
+        @client.get_custom_fields(100).each {|custom_field|
+          custom_field.allow_input.should == custom_fields_7.first['allow_input']
+        }
+      end
+    end
+  end
 end

@@ -96,6 +96,19 @@ module Backlog
       }
     end
 
+    # Integer -> (String|Integer) -> Backlog::Object::CustomFields
+    def get_custom_fields(project_id, issue_type=nil)
+      h = {"project_id" => project_id}
+      if issue_type.instance_of? String
+        h["issue_type"] = issue_type
+      elsif issue_type.instance_of? Integer
+        h["issue_type_id"] = isuissue_type
+      end
+      self.call("backlog.getCustomFields", h).map {|custom_field|
+        Backlog::Object::CustomField.new(custom_field)
+      }
+    end
+
     # String(Integer) -> Integer
     # String(String) -> String
     # Integer -> Integer

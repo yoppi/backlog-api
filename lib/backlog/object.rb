@@ -123,6 +123,13 @@ module Backlog
       attr_reader :id, :name
     end
 
+    class Item
+      def initialize(item)
+        @id = item['id']
+        @name = item['name']
+      end
+    end
+
     class Milestone
       def initialize(milestone)
         @id = milestone['id']
@@ -160,6 +167,40 @@ module Backlog
         @name = activity_type['name']
       end
       attr_reader :id, :name
+    end
+
+    class CustomField
+      def initialize(custom_field)
+        @id = custom_field['id']
+        @type_id = custom_field['type_id']
+        @name = custom_field['name']
+        @description = custom_field['description']
+        @required = custom_field['required']
+        if custom_field['issue_types']
+          @issue_types = custom_field['issue_types'].map {|issue_type| IssueType.new(issue_type) }
+        end
+        # custom_field type is Number(type_id = 3)
+        @min = custom_field['min']
+        @max = custom_field['max']
+        @initial_value = custom_field['initial_value']
+        @unit = custom_field['unit']
+        # custom_field type is Date(type_id = 4)
+        @initial_value_type = custom_field['initial_value_type']
+        @initial_shift = custom_field['initial_shift']
+        @initial_date = custom_field['initial_date']
+        # custom_field type is List(type_id = 5,6)
+        if custom_field['items']
+          @items = custom_field['items'].map {|item| Item.new(item)}
+        end
+        # custom_field type is CheckBox or RadioButton(type_id = 7,8)
+        @allow_input = custom_field['allow_input']
+      end
+      attr_reader :id, :type_id, :name, :description, :required,
+                  :issue_types,
+                  :min, :max, :initial_value, :unit,
+                  :initial_value_type, :initial_shift, :initial_date,
+                  :items,
+                  :allow_input
     end
   end
 end
