@@ -3,6 +3,7 @@ $:.unshift(File.dirname(__FILE__))
 
 require 'rspec'
 require 'rr'
+require 'pry'
 
 require 'backlog'
 
