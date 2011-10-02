@@ -491,4 +491,29 @@ describe Backlog::API do
       end
     end
   end
+
+  describe "イシュー件数検索API" do
+    context "クエリにproject_idがない場合" do
+      let(:condition) {
+        {"issueTypeId" => 100}
+      }
+      it "例外が発生する" do
+        expect { @client.count_issue(condition) }.should raise_error(Backlog::API::ArgumentError)
+      end
+    end
+    context "指定した検索条件で検索する" do
+      let(:condition) {
+        {
+          "projectId" => 100,
+          "issueTypeId" => 10
+        }
+      }
+      before do
+        mock(@client).call.with_any_args { 1 }
+      end
+      it "指定した検索条件で検索できる" do
+        @client.count_issue(condition).should == 1
+      end
+    end
+  end
 end

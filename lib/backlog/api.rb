@@ -2,6 +2,8 @@
 
 module Backlog
   module API
+    class ArgumentError < StandardError ; end
+
     def get_projects
       self.call("backlog.getProjects").map {|project|
         Backlog::Object::Project.new(project)
@@ -107,6 +109,13 @@ module Backlog
       self.call("backlog.getCustomFields", h).map {|custom_field|
         Backlog::Object::CustomField.new(custom_field)
       }
+    end
+
+    # Hash -> Integer
+    def count_issue(condition)
+      raise Backlog::API::ArgumentError, "must specify 'projectId'" unless condition.has_key? "projectId"
+      condition = Backlog::Object::FindCondition.new(condition)
+      self.call("backlog.countIssue", condition.to_h)
     end
 
     # String(Integer) -> Integer
