@@ -2,6 +2,15 @@
 
 module Backlog
   module Object
+    class Serializable
+      def to_h
+        self.instance_variables.inject({}) {|ret, v|
+          ret[v.to_s.gsub(/^@/, '')] = self.instance_variable_get(v.to_s)
+          ret
+        }
+      end
+    end
+
     class Project
       def initialize(project)
         @id = project['id']
@@ -201,6 +210,38 @@ module Backlog
                   :initial_value_type, :initial_shift, :initial_date,
                   :items,
                   :allow_input
+    end
+
+    class FindCondition < Serializable
+      CONDITION_KEYS = %w[
+        projectId
+        issueTypeId
+        issueType
+        componentId
+        versionId
+        milestoneId
+        statusId
+        priorityId
+        assignerId
+        createdUserId
+        resolutionId
+        created_on_min
+        created_on_max
+        updated_on_min
+        updated_on_max
+      ].each {|k|
+        class_eval { attr_reader k.to_sym }
+      }
+
+      def initialize(condition)
+        condition.each {|k, v|
+          self.instance_eval %Q{
+            if CONDITION_KEYS.include? k
+              @#{k} = v
+            end
+          }
+        }
+      end
     end
   end
 end
