@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
+    "backlog-api.gemspec",
     "lib/backlog.rb",
     "lib/backlog/api.rb",
     "lib/backlog/client.rb",
