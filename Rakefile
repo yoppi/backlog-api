@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "backlog-api"
   gem.homepage = "http://github.com/yoppi/backlog-api"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Backlog API}
+  gem.description = %Q{A library to Access Backlog Issue from Ruby}
   gem.email = "y.hirokazu@gmail.com"
   gem.authors = ["yoppi"]
   # dependencies defined in Gemfile
